@@ -265,7 +265,7 @@ def send_message():
         db.session.add(user_message)
         
         # 2. Obtenir la réponse du service RAG (attaché à l'application)
-        rag_service = current_app.rag_service
+        rag_service = current_app.rag_service()
         bot_response = rag_service.ask(message_content)
         
         # 3. Sauvegarder la réponse du bot
