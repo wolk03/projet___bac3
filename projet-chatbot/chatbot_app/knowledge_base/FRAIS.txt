@@ -1,0 +1,29 @@
+Titre: Frais Académiques
+
+Les frais sont payables en 4 tranches.
+
+Frais de scolarité par faculté (Promotions de recrutement BAC 1) :
+- Pour les facultés INFO (Sciences Informatiques), SIC (Sciences de l'Information), SEM (Sciences Économiques), LSH (Lettres), DRT (Droit) : Le total est de 870. Les tranches sont : 200, 230, 200, 240.
+- Pour POLY (Polytechnique) et ARCHI (Architecture) : Le total est de 920. Les tranches sont : 220, 240, 220, 240.
+- Pour Théologie : Le total est de 530. Les tranches sont : 120, 140, 130, 140.
+
+Frais pour le cycle de Master (Master 1 & 2) :
+Le cycle de Master ne concerne que la faculté des Sciences Économiques et Management.
+Le total est de 1320. Les tranches sont : 320, 340, 320, 340.
+
+Autres frais (en dollars américains, sauf indication contraire) :
+- Frais de session - Examen : 15$
+- Stage : 20$
+- TFC (Travail de Fin de Cycle) : 50$
+- Sujet : 10$
+- Mini-Mémoire : 10$
+- Mémoire : 70$
+- Homologation de diplôme : 75$
+- P/S Master : 140$
+- Changement de filière : 10$
+- Inscription spéciale : 100$
+- Réintégration : 50$
+- Réadmission : 10$
+- Attestation de fréquentation : 10$
+- Relevé des cotes : 10$
+- Fiche de scolaire : 3000 Fc

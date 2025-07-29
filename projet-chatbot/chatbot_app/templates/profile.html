@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Mon Profil - ChatBot Universitaire{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="d-flex align-items-center">
+                    <a href="{{ url_for('main.home') }}" class="btn btn-outline-secondary me-3">
+                        <i class="fas fa-arrow-left me-2"></i>Retour
+                    </a>
+                    <h2 class="mb-0">Mon Profil</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Profile Information -->
+            <div class="col-lg-4 mb-4">
+                <div class="card profile-card">
+                    <div class="card-body text-center">
+                        <div class="profile-avatar mb-3">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h4 class="card-title">{{ user.get_full_name() }}</h4>
+                        <p class="text-muted">{{ user.email }}</p>
+                        <p class="text-muted small">
+                            Membre depuis le {{ user.created_at.strftime('%d/%m/%Y') }}
+                        </p>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <i class="fas fa-edit me-2"></i>Modifier le profil
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Statistiques</h5>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-number">{{ conversations|length }}</span>
+                                <span class="stat-label">Conversations</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">
+                                    {% set total_messages = 0 %}
+                                    {% for conv in conversations %}
+                                        {% set total_messages = total_messages + conv.messages|length %}
+                                    {% endfor %}
+                                    {{ total_messages }}
+                                </span>
+                                <span class="stat-label">Messages</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversation History -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Historique des conversations</h5>
+                        {% if conversations %}
+                        <button class="btn btn-outline-danger btn-sm" onclick="confirmDeleteAll()">
+                            <i class="fas fa-trash me-2"></i>Tout supprimer
+                        </button>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        {% if not conversations %}
+                        <div class="text-center text-muted py-5">
+                            <i class="fas fa-comments fa-3x mb-3"></i>
+                            <p>Aucune conversation pour le moment</p>
+                            <form action="{{ url_for('main.new_conversation') }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus-circle me-2"></i>Commencer une conversation
+                                </button>
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="conversation-list">
+                            {% for conversation in conversations %}
+                            <div class="conversation-item">
+                                <div class="conversation-content">
+                                    <div class="conversation-header">
+                                        <h6 class="conversation-title">{{ conversation.title }}</h6>
+                                        <span class="conversation-date">{{ conversation.updated_at.strftime('%d/%m/%Y') }}</span>
+                                    </div>
+                                    <p class="conversation-preview text-muted">
+                                        {{ conversation.messages|length }} message{{ 's' if conversation.messages|length > 1 else '' }}
+                                        {% if conversation.messages %}
+                                        - Dernier: {{ conversation.messages[-1].content[:100] }}...
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="conversation-actions">
+                                    <a href="{{ url_for('main.chat', conversation_id=conversation.id) }}" 
+                                       class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-comments"></i>
+                                    </a>
+                                    <form action="{{ url_for('main.delete_conversation', conversation_id=conversation.id) }}" 
+                                          method="POST" class="d-inline" 
+                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette conversation?')">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier le profil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('main.update_profile') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit-nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="edit-nom" name="nom" value="{{ user.nom }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-postnom" class="form-label">Post-nom</label>
+                        <input type="text" class="form-control" id="edit-postnom" name="postnom" value="{{ user.postnom }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="edit-prenom" name="prenom" value="{{ user.prenom }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="edit-email" name="email" value="{{ user.email }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function confirmDeleteAll() {
+    if (confirm('Êtes-vous sûr de vouloir supprimer toutes vos conversations? Cette action est irréversible.')) {
+        // For now, redirect to profile page with a message
+        // TODO: Implement bulk delete functionality
+        alert('Fonctionnalité en cours de développement. Supprimez les conversations une par une pour le moment.');
+    }
+}
+</script>
+{% endblock %}

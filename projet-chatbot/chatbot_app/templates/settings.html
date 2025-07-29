@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Paramètres - ChatBot Universitaire{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="d-flex align-items-center">
+                    <a href="{{ url_for('main.home') }}" class="btn btn-outline-secondary me-3">
+                        <i class="fas fa-arrow-left me-2"></i>Retour
+                    </a>
+                    <h2 class="mb-0">Paramètres</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Account Settings -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-cog me-2"></i>Paramètres du compte
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <h6>Informations personnelles</h6>
+                            <p class="text-muted">Gérez vos informations de profil</p>
+                            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                <i class="fas fa-edit me-2"></i>Modifier le profil
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-shield-alt me-2"></i>Sécurité
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <h6>Mot de passe</h6>
+                            <p class="text-muted">Modifiez votre mot de passe pour sécuriser votre compte</p>
+                            <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                <i class="fas fa-key me-2"></i>Changer le mot de passe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Settings -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-comments me-2"></i>Paramètres de chat
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <h6>Historique des conversations</h6>
+                            <p class="text-muted">Gérez vos conversations sauvegardées</p>
+                            <a href="{{ url_for('main.profile') }}" class="btn btn-outline-info">
+                                <i class="fas fa-history me-2"></i>Voir l'historique
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>À propos
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <h6>ChatBot Universitaire</h6>
+                            <p class="text-muted">
+                                Votre assistant virtuel pour toutes vos questions universitaires. 
+                                Propulsé par l'intelligence artificielle Google Gemini.
+                            </p>
+                            <p class="text-muted small">
+                                Version 1.0 - © 2025 Université
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="card border-danger mb-4">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Zone dangereuse
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <h6>Déconnexion</h6>
+                            <p class="text-muted">Se déconnecter de votre session actuelle</p>
+                            <a href="{{ url_for('main.logout') }}" class="btn btn-danger" 
+                               onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter?')">
+                                <i class="fas fa-sign-out-alt me-2"></i>Se déconnecter
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier le profil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('main.update_profile') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="edit-nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="edit-nom" name="nom" value="{{ user.nom }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-postnom" class="form-label">Post-nom</label>
+                        <input type="text" class="form-control" id="edit-postnom" name="postnom" value="{{ user.postnom }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="edit-prenom" name="prenom" value="{{ user.prenom }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="edit-email" name="email" value="{{ user.email }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Changer le mot de passe</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ url_for('main.change_password') }}" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="current-password" class="form-label">Mot de passe actuel</label>
+                        <input type="password" class="form-control" id="current-password" name="current_password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-password" class="form-label">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="new-password" name="new_password" minlength="6" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm-new-password" class="form-label">Confirmer le nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="confirm-new-password" name="confirm_password" minlength="6" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-warning">Changer le mot de passe</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Password confirmation validation
+document.getElementById('confirm-new-password').addEventListener('input', function() {
+    const newPassword = document.getElementById('new-password').value;
+    const confirm = this.value;
+    
+    if (newPassword !== confirm) {
+        this.setCustomValidity('Les mots de passe ne correspondent pas');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+</script>
+{% endblock %}

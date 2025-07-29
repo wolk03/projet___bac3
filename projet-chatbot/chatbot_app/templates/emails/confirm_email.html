@@ -1,0 +1,20 @@
+<p>Bonjour {{ user.prenom }},</p>
+<p>
+    Bienvenue sur ChatBot Universitaire ! Pour activer votre compte, veuillez cliquer sur le lien de confirmation ci-dessous :
+</p>
+<p style="text-align: center;">
+    <a href="{{ confirm_url }}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+        Confirmer mon compte
+    </a>
+</p>
+<p>
+    Si le bouton ne fonctionne pas, copiez et collez le lien suivant dans votre navigateur :<br>
+    <a href="{{ confirm_url }}">{{ confirm_url }}</a>
+</p>
+<p>
+    Ce lien expirera dans une heure.
+</p>
+<p>
+    Cordialement,<br>
+    L'équipe du ChatBot
+</p>

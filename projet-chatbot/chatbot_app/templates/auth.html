@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion - ChatBot Universitaire{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" class="auth-logo">
+            <h2 class="auth-title">ChatBot Universitaire</h2>
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs justify-content-center mb-4" id="authTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">
+                    <i class="fas fa-sign-in-alt me-2"></i>Connexion
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">
+                    <i class="fas fa-user-plus me-2"></i>Inscription
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="authTabContent">
+            <!-- Login Form -->
+            <div class="tab-pane fade show active" id="login" role="tabpanel">
+                <form action="{{ url_for('main.login') }}" method="POST" class="auth-form">
+                    <div class="mb-3">
+                        <label for="login-email" class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </label>
+                        <input type="email" class="form-control" id="login-email" name="email" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="login-password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Mot de passe
+                        </label>
+                        <input type="password" class="form-control" id="login-password" name="password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 auth-submit-btn">
+                        <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                    </button>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div class="tab-pane fade" id="register" role="tabpanel">
+                <form action="{{ url_for('main.register') }}" method="POST" class="auth-form">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nom" class="form-label">
+                                <i class="fas fa-user me-2"></i>Nom
+                            </label>
+                            <input type="text" class="form-control" id="nom" name="nom" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="postnom" class="form-label">
+                                <i class="fas fa-user me-2"></i>Post-nom
+                            </label>
+                            <input type="text" class="form-control" id="postnom" name="postnom" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="prenom" class="form-label">
+                            <i class="fas fa-user me-2"></i>Prénom
+                        </label>
+                        <input type="text" class="form-control" id="prenom" name="prenom" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="register-email" class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </label>
+                        <input type="email" class="form-control" id="register-email" name="email" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="register-password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Mot de passe
+                        </label>
+                        <input type="password" class="form-control" id="register-password" name="password" minlength="6" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="confirm-password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Confirmer le mot de passe
+                        </label>
+                        <input type="password" class="form-control" id="confirm-password" name="confirm_password" minlength="6" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100 auth-submit-btn">
+                        <i class="fas fa-user-plus me-2"></i>Créer un compte
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Password confirmation validation
+document.getElementById('confirm-password').addEventListener('input', function() {
+    const password = document.getElementById('register-password').value;
+    const confirm = this.value;
+    
+    if (password !== confirm) {
+        this.setCustomValidity('Les mots de passe ne correspondent pas');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+</script>
+{% endblock %}

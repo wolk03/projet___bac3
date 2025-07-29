@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if conversation %}{{ conversation.title }} - Chat{% else %}Nouveau Chat{% endif %} - ChatBot Universitaire
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <!-- Chat Header -->
+    <div class="chat-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <a href="{{ url_for('main.home') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-arrow-left me-2"></i>Retour
+                    </a>
+                </div>
+                <div class="col">
+                    <h4 class="chat-title mb-0">
+                        {% if conversation %}
+                            {{ conversation.title }}
+                        {% else %}
+                            Nouvelle conversation
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="col-auto">
+                    {% if conversation %}
+                    <button class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#chatInfoModal">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="chat-messages" id="chatMessages">
+        <div class="container-fluid">
+            {% if not messages %}
+            <div class="text-center mt-5">
+                <div class="welcome-message">
+                    <i class="fas fa-robot fa-3x text-primary mb-3"></i>
+                    <h4>Bonjour {{ user.get_full_name() }}!</h4>
+                    <p class="text-muted">Comment puis-je vous aider aujourd'hui avec vos questions universitaires?</p>
+                </div>
+            </div>
+            {% endif %}
+
+            {% for message in messages %}
+            <div class="message {{ 'user-message' if message.is_user else 'bot-message' }}">
+                <div class="message-content">
+                    <div class="message-avatar">
+                        {% if message.is_user %}
+                            <i class="fas fa-user"></i>
+                        {% else %}
+                            <i class="fas fa-robot"></i>
+                        {% endif %}
+                    </div>
+                    <div class="message-bubble">
+                        <div class="message-text">{{ message.content }}</div>
+                        <div class="message-time">{{ message.timestamp.strftime('%H:%M') }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="chat-input">
+        <div class="container-fluid">
+            {% if conversation %}
+            <form action="{{ url_for('main.send_message') }}" method="POST" class="chat-form">
+                <input type="hidden" name="conversation_id" value="{{ conversation.id }}">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="message" id="messageInput" 
+                           placeholder="Tapez votre message ici..." autocomplete="off" required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+            {% else %}
+            <div class="text-center">
+                <form action="{{ url_for('main.new_conversation') }}" method="post">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus-circle me-2"></i>Commencer la conversation
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Chat Info Modal -->
+{% if conversation %}
+<div class="modal fade" id="chatInfoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Informations de la conversation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Titre:</strong> {{ conversation.title }}</p>
+                <p><strong>Créée le:</strong> {{ conversation.created_at.strftime('%d/%m/%Y à %H:%M') }}</p>
+                <p><strong>Dernière mise à jour:</strong> {{ conversation.updated_at.strftime('%d/%m/%Y à %H:%M') }}</p>
+                <p><strong>Nombre de messages:</strong> {{ messages|length }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Auto-scroll to bottom
+function scrollToBottom() {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Submit form on Enter key
+document.getElementById('messageInput')?.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        this.closest('form').submit();
+    }
+});
+
+// Auto-focus on message input
+document.addEventListener('DOMContentLoaded', function() {
+    scrollToBottom();
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+        messageInput.focus();
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - ChatBot Universitaire{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <!-- Header -->
+    <div class="home-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h1 class="home-title">
+                        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" class="home-logo me-3">
+                        Bienvenue, {{ user.get_full_name() }}!
+                    </h1>
+                </div>
+                <div class="col-auto">
+                    <a href="{{ url_for('main.logout') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt me-2"></i>Déconnexion
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container home-content">
+        <!-- ChatBot Presentation -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+                <div class="card presentation-card">
+                    <div class="card-body text-center">
+                        <div class="presentation-icon mb-4">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h2 class="card-title mb-4">Votre Assistant Universitaire IA</h2>
+                        <p class="card-text lead mb-4">
+                            Je suis là pour vous aider avec toutes vos questions concernant la vie universitaire. 
+                            Que vous ayez besoin d'informations sur les cours, les admissions, les services aux étudiants 
+                            ou tout autre aspect de votre parcours universitaire, je suis à votre disposition 24h/24.
+                        </p>
+                        <form action="{{ url_for('main.new_conversation') }}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-primary btn-lg welcome-btn">
+                                <i class="fas fa-comments me-2"></i>Commencer une conversation
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">Ce que je peux faire pour vous</h3>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon mb-3">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h5 class="card-title">Informations Académiques</h5>
+                        <p class="card-text">Programmes d'études, horaires de cours, calendrier académique, et procédures d'inscription.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon mb-3">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h5 class="card-title">Services aux Étudiants</h5>
+                        <p class="card-text">Bibliothèque, résidences universitaires, restauration, activités étudiantes et clubs.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center">
+                        <div class="service-icon mb-3">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h5 class="card-title">Aide et Support</h5>
+                        <p class="card-text">Bourses, aide financière, orientation académique et professionnelle, support technique.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="home-tabs">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <form action="{{ url_for('main.new_conversation') }}" method="post" class="d-inline w-100">
+                        <button type="submit" class="btn btn-primary w-100 home-tab-btn">
+                            <div class="tab-icon">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div class="tab-text">
+                                <h5>Nouvelle Conversation</h5>
+                                <p>Démarrer un nouveau chat avec l'assistant</p>
+                            </div>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <a href="{{ url_for('main.profile') }}" class="btn btn-outline-primary w-100 home-tab-btn">
+                        <div class="tab-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="tab-text">
+                            <h5>Mon Compte</h5>
+                            <p>Consulter le profil et l'historique</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <a href="{{ url_for('main.settings') }}" class="btn btn-outline-secondary w-100 home-tab-btn">
+                        <div class="tab-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <div class="tab-text">
+                            <h5>Paramètres</h5>
+                            <p>Gérer les préférences du compte</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
