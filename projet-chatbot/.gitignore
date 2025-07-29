@@ -1,0 +1,22 @@
+# Fichiers de cache Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Dossiers d'environnement virtuel
+venv/
+.venv/
+env/
+ENV/
+
+# Dossiers spécifiques à l'IDE
+.idea/
+.vscode/
+
+# Fichiers de configuration locaux
+.env
+instance/
+
+# Fichiers de base de données vectorielle
+db_faiss/
