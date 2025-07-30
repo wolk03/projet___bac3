@@ -3,6 +3,7 @@ from . import db # On importe 'db' depuis le fichier app.py principal
 from .models import User, Conversation, Message
 from chatbot_app.utils import generate_confirmation_token, confirm_token, send_email # Le chemin complet est plus sûr
 import logging
+from . import db, rag_service
 
 main_bp = Blueprint('main', __name__)
 @main_bp.route('/')
