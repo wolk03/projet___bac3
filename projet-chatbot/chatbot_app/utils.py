@@ -3,6 +3,7 @@ from itsdangerous import URLSafeTimedSerializer
 from flask import current_app
 from flask_mail import Message
 from . import mail
+from flask_mail import Message
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
